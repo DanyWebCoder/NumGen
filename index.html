@@ -168,8 +168,7 @@ section.active{display:block}
 .barFill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s cubic-bezier(.2,.9,.3,1);box-shadow:0 0 12px rgba(47,230,167,.6)}
 .barLbl{font-size:12px;color:#93a4ad}
 .prestBtn{width:100%;margin-top:18px;padding:18px;border-radius:18px;font-family:'Unbounded';font-weight:800;font-size:15px;
-  color:#fff;background:linear-gradient(135deg,rgba(0,0,0,.35),var(--acc));background-blend-mode:multiply;
-  background-color:var(--acc);box-shadow:0 10px 28px rgba(47,230,167,.35);transition:transform .15s,filter .3s}
+  color:#fff;background-color:var(--acc);box-shadow:0 10px 28px rgba(47,230,167,.35);transition:transform .15s,filter .3s}
 .prestBtn:active{transform:scale(.96)}
 .prestBtn:disabled{filter:grayscale(.7) brightness(.6)}
 .infoRow{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;margin-top:10px;font-size:13.5px}
@@ -209,8 +208,10 @@ html[data-theme="ultra"] #bubble{background:rgba(143,123,255,.24);border-color:r
 .navBtn span{font-size:10px;font-weight:800;letter-spacing:.3px}
 .navBtn.active{color:var(--acc2)}
 
+/* ============ КАТСЦЕНА ============ */
 #cutscene{position:fixed;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:30px;background:#040607;overflow:hidden}
+  padding:30px;background:#040607;overflow:hidden;animation:csIn .35s ease}
+@keyframes csIn{from{opacity:0}}
 #csGlow{position:absolute;inset:-20%;background:radial-gradient(55% 45% at 50% 46%,var(--tc,transparent),transparent 70%);
   opacity:.34;filter:blur(34px);animation:csGlow 2.4s ease-in-out infinite alternate}
 @keyframes csGlow{to{opacity:.55;transform:scale(1.12)}}
@@ -218,6 +219,17 @@ html[data-theme="ultra"] #bubble{background:rgba(143,123,255,.24);border-color:r
   background:repeating-conic-gradient(from 0deg,var(--tc,transparent) 0deg 5deg,transparent 5deg 15deg);
   opacity:.07;animation:rays 26s linear infinite;-webkit-mask-image:radial-gradient(circle,#000 0%,transparent 62%);mask-image:radial-gradient(circle,#000 0%,transparent 62%)}
 @keyframes rays{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#csHalo{position:absolute;left:50%;top:46%;width:min(80vw,440px);height:min(80vw,440px);transform:translate(-50%,-50%);
+  border-radius:50%;border:2px dashed var(--tc);opacity:0;pointer-events:none}
+#cutscene.halo #csHalo{opacity:.5;animation:haloSpin 9s linear infinite}
+@keyframes haloSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#csRing{position:absolute;left:50%;top:46%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;
+  border:3px solid var(--tc);opacity:0;pointer-events:none;box-shadow:0 0 30px var(--tc),inset 0 0 18px var(--tc)}
+#csRing.go{animation:ringGo .9s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes ringGo{from{opacity:.95;transform:scale(.2)}to{opacity:0;transform:scale(30)}}
+#csFlash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#csFlash.go{animation:flashGo .55s ease-out forwards}
+@keyframes flashGo{from{opacity:.9}to{opacity:0}}
 #csTop{position:relative;font-family:'Unbounded';font-weight:800;font-size:13px;letter-spacing:4px;text-transform:uppercase;
   color:var(--tc,#fff);opacity:0;animation:csFade .6s .15s forwards;text-shadow:0 0 20px var(--tc)}
 @keyframes csFade{to{opacity:1}}
@@ -227,20 +239,41 @@ html[data-theme="ultra"] #bubble{background:rgba(143,123,255,.24);border-color:r
 #csNum .digit.roll{opacity:.55;animation:dRoll .12s linear infinite}
 #csNum .digit.lock{animation:csLock .5s cubic-bezier(.3,1.9,.4,1)}
 @keyframes csLock{35%{transform:scale(1.35);filter:brightness(2)}}
+#csNum.glitch{animation:glitch 1.1s steps(2) infinite}
+@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-3px,1px) skewX(-3deg)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,2px) skewX(2deg)}100%{transform:translate(0)}}
+#cutscene.csT6 #csNum .digit,#cutscene.csT7 #csNum .digit,#cutscene.csT8 #csNum .digit{font-size:clamp(34px,10vw,66px)}
+#cutscene.csT2 #csRays{opacity:.05}
+#cutscene.csT3 #csRays{opacity:.08}
+#cutscene.csT4 #csRays{opacity:.10;animation-duration:20s}
+#cutscene.csT5 #csRays{opacity:.12;animation-duration:16s}
+#cutscene.csT5 #csGlow{opacity:.45}
+#cutscene.csT6 #csRays{opacity:.14;animation-duration:11s}
+#cutscene.csT7 #csRays{opacity:.17;animation-duration:7s}
+#cutscene.csT7::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 150px rgba(255,45,85,.6);animation:vinPulse .9s ease-in-out infinite alternate}
+@keyframes vinPulse{from{opacity:.35}to{opacity:1}}
+#cutscene.csT8 #csTop{font-size:16px;letter-spacing:6px}
+#cutscene.csT8 #csGlow{background:radial-gradient(55% 45% at 50% 46%,rgba(255,255,255,.85),transparent 70%);animation-duration:1.4s}
+#cutscene.csT8 #csRays{opacity:.13;animation-duration:6s;
+  background:repeating-conic-gradient(from 0deg,#ff004c 0deg 5deg,transparent 5deg 15deg,#00cfff 15deg 20deg,transparent 20deg 30deg)}
+#cutscene.csT8 #csNum .digit{background:linear-gradient(90deg,#ff004c,#ff9a00,#ffe600,#00ff85,#00cfff,#8f5bff,#ff00d4,#ff004c);
+  background-size:400% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:rb 2s linear infinite;text-shadow:none}
+@keyframes rb{to{background-position:400% 0}}
 #csChips{position:absolute;bottom:calc(54px + env(safe-area-inset-bottom));left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:10px;padding:0 20px}
 #csChips .chip{opacity:0;transform:translateY(24px);animation:chipUp .6s cubic-bezier(.25,1.5,.4,1) forwards;
   font-size:14px;padding:10px 18px;background:rgba(10,14,16,.72);backdrop-filter:blur(12px)}
 @keyframes chipUp{to{opacity:1;transform:none}}
 #csChips .tierBig{font-family:'Unbounded';font-weight:800;font-size:16px;color:var(--tc);border:1.5px solid var(--tc);
-  box-shadow:0 0 26px rgba(255,255,255,.2),inset 0 0 14px rgba(255,255,255,.08)}
+  box-shadow:0 0 26px rgba(255,255,255,.18),inset 0 0 14px rgba(255,255,255,.06)}
 #csVal{font-family:'Unbounded';font-weight:900;font-size:20px;color:var(--gold)}
-#csHint{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom));font-size:12px;color:#6d7d85;opacity:0;animation:csFade .5s 2.4s forwards}
+#csHint{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom));font-size:12px;color:#6d7d85;opacity:0;animation:csFade .5s 2.2s forwards}
 .particle{position:absolute;bottom:-14px;border-radius:50%;background:var(--tc);pointer-events:none;
   animation:rise var(--dur) ease-in var(--del) forwards;opacity:0}
 @keyframes rise{6%{opacity:.95}to{transform:translate(var(--dx),-112vh);opacity:0}}
 body.shake #cutscene{animation:shakeX .5s}
 @keyframes shakeX{20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
 
+/* ============ РЕКЛАМА ============ */
 #ad{position:fixed;inset:0;z-index:150;background:#050505;display:flex;flex-direction:column}
 #adTop{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 14px 10px}
 #adTop .adTag{font-size:10.5px;font-weight:800;letter-spacing:1.6px;padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.12);color:#cfd6da}
@@ -248,6 +281,8 @@ body.shake #cutscene{animation:shakeX .5s}
 #adClose{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.14);font-size:16px;color:#fff;display:flex;align-items:center;justify-content:center}
 #adProg{height:3px;background:rgba(255,255,255,.12);margin:0 14px;border-radius:100px;overflow:hidden}
 #adProgFill{height:100%;width:0;background:var(--gold)}
+#adProgFill.go{animation:adProgAnim 15s linear forwards}
+@keyframes adProgAnim{from{width:0}to{width:100%}}
 #adVideo{flex:1;margin:14px;border-radius:24px;position:relative;overflow:hidden;background:#0a0a12;border:1px solid rgba(255,255,255,.1)}
 .adBar{position:absolute;left:0;right:0;height:9%;background:#000;z-index:6}
 .adBar.t{top:0}.adBar.b{bottom:0}
@@ -271,10 +306,16 @@ body.shake #cutscene{animation:shakeX .5s}
 @keyframes adPop{from{transform:scale(.2) rotate(-16deg);opacity:0}}
 .adH{font-family:'Unbounded';font-weight:800;font-size:24px;color:#fff}
 .adP{font-size:14px;color:rgba(255,255,255,.75);max-width:300px;line-height:1.5}
+.adTags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.adTags span{font-size:12px;font-weight:800;padding:7px 13px;border-radius:100px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);color:#fff;animation:adPop .6s cubic-bezier(.3,1.8,.4,1) both}
+.adTags span:nth-child(2){animation-delay:.15s}
+.adTags span:nth-child(3){animation-delay:.3s}
 .adUrl{font-family:'Unbounded';font-weight:900;font-size:clamp(21px,6.4vw,30px);color:var(--gold);
   text-shadow:0 0 30px rgba(255,210,74,.5);animation:adPop .7s cubic-bezier(.3,1.8,.4,1)}
 .adGo{margin-top:8px;padding:13px 30px;border-radius:100px;font-weight:800;font-size:14px;color:#3a2400;
   background:linear-gradient(135deg,#ffe9a3,var(--gold));box-shadow:0 10px 30px rgba(255,210,74,.35);animation:adPulse 1.2s ease-in-out infinite}
+button.adGo{border:none;cursor:pointer}
 @keyframes adPulse{50%{transform:scale(1.06)}}
 #adCta{display:flex;align-items:center;gap:12px;padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
 #adCta .favicon{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#9ff7d8,#2fe6a7);
@@ -296,7 +337,7 @@ body.shake #cutscene{animation:shakeX .5s}
 .sw{width:46px;height:46px;border-radius:16px;border:2px solid transparent;transition:transform .2s,border-color .2s;position:relative}
 .sw:active{transform:scale(.9)}
 .sw.on{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
-.setRow{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-top:1px solid rgba(255,255,255,.07);font-size:14px;font-weight:600}
+.setRow{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-top:1px solid rgba(255,255,255,.07);font-size:14px;font-weight:600;gap:12px}
 .setRow small{display:block;font-size:11.5px;color:#8b9ba4;font-weight:500;margin-top:2px}
 .dangerBtn{width:100%;margin-top:16px;padding:14px;border-radius:15px;font-weight:800;font-size:13.5px;color:#ff8095;
   background:rgba(255,60,90,.1);border:1px solid rgba(255,60,90,.3)}
@@ -432,8 +473,11 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
 
 <div id="cutscene" class="hidden">
   <div id="csGlow"></div><div id="csRays"></div>
+  <div id="csHalo"></div>
+  <div id="csRing"></div>
   <div id="csTop"></div>
   <div id="csNum"></div>
+  <div id="csFlash"></div>
   <div id="csChips"></div>
   <div id="csHint">нажми, чтобы продолжить</div>
 </div>
@@ -451,27 +495,27 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
     <div class="adScene adBg1 s1">
       <div class="adLogoD">D</div>
       <div class="adH">DANY</div>
-      <div class="adP">разработчик игр и приложений</div>
+      <div class="adTags"><span>сайты</span><span>публикации</span><span>связь</span></div>
     </div>
     <div class="adScene adBg2 s2">
-      <div class="adH" style="font-size:20px">Все игры —<br>в одном месте 🎮</div>
-      <div class="adP">быстро, бесплатно и прямо в браузере</div>
+      <div class="adH" style="font-size:20px">Всё в одном месте 🚀</div>
+      <div class="adP">проекты, посты, новости и прямая связь с автором — заходи и следи за обновлениями</div>
     </div>
     <div class="adScene adBg3 s3">
       <div class="adUrl">dany.run.place</div>
-      <div class="adP">сайт разработчика Dany</div>
+      <div class="adP">личный сайт разработчика Dany</div>
     </div>
     <div class="adScene adBg1 s4">
-      <div class="adH">Играй дальше ⚡</div>
+      <div class="adH">Читай публикации ⚡</div>
       <div class="adP">спасибо за просмотр!</div>
-      <div class="adGo">ЗАБРАТЬ СПИН</div>
+      <button class="adGo" id="adClaim">ЗАБРАТЬ СПИН</button>
     </div>
     <div class="sweep"></div><div class="grain"></div>
   </div>
   <div id="adCta">
     <div class="favicon">D</div>
-    <div class="txt"><b>dany.run.place</b><span>Сайт разработчика Dany • реклама</span></div>
-    <button>Открыть</button>
+    <div class="txt"><b>dany.run.place</b><span>Сайты, публикации и связь с Dany</span></div>
+    <button id="adOpenSite">Открыть</button>
   </div>
 </div>
 
@@ -481,9 +525,11 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
   <h3>Настройки</h3>
   <div class="themeRow" id="themeRow"></div>
   <div class="setRow"><div>Звук<small>тики, фанфары и монеты</small></div><div class="switch" id="swSound"></div></div>
+  <div class="setRow"><div>Вибрация<small>отдача при спинах и наградах</small></div><div class="switch" id="swVibro"></div></div>
+  <div class="setRow"><div>Катсцены<small>эпичные сцены для редких чисел</small></div><div class="switch" id="swCut"></div></div>
   <div class="setRow"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
   <button class="dangerBtn" id="resetBtn">Сбросить весь прогресс</button>
-  <div class="credit">ЧИСЛО • версия 1.0<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
+  <div class="credit">ЧИСЛО • версия 1.2<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
 </div>
 
 <div id="modalWrap"><div id="modalBox">
@@ -495,7 +541,6 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
 
 <script>
 "use strict";
-/* ================= ДАННЫЕ ================= */
 const TIERS=[
  {name:'Обычное',    col:'#9aa4b2', min:1e8,  max:1e9,      w:84000, v:[16,42]},
  {name:'Нечастое',   col:'#4cc9ff', min:1e7,  max:1e8-1,    w:12500, v:[95,230]},
@@ -509,16 +554,25 @@ const TIERS=[
 ];
 const KL=[0,.04,.1,.2,.35,.55,.85,1.3,2];
 const CS_LABEL=['','','РЕДКОЕ ЧИСЛО','ЭПИЧЕСКОЕ ЧИСЛО','ЛЕГЕНДАРНОЕ ЧИСЛО!','МИФИЧЕСКОЕ ЧИСЛО!','БОЖЕСТВЕННОЕ ЧИСЛО!','ЗАПРЕДЕЛЬНОЕ ЧИСЛО!!','⚠ АБСОЛЮТ ⚠'];
+const CS_CFG={
+ 2:{parts:18,delay:200,dur:1400},
+ 3:{parts:24,delay:300,dur:1550},
+ 4:{parts:30,delay:420,dur:1700,ring:true},
+ 5:{parts:36,delay:560,dur:1850,ring:true,flash:true,boom:true},
+ 6:{parts:42,delay:700,dur:2000,ring:true,flash:true,boom:true,halo:true},
+ 7:{parts:46,delay:820,dur:2150,ring:true,flash:true,boom:true,glitch:true},
+ 8:{parts:60,delay:950,dur:2400,ring:true,flash:true,boom:true,rainbow:true}
+};
 const PRESTIGE_BASE=250000;
 const THEMES=[['mint','#2fe6a7','Изумруд'],['ice','#4cc9ff','Лёд'],['amber','#ffb020','Янтарь'],['rose','#ff5d7e','Роза'],['ultra','#8f7bff','Ультра']];
 
 const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:false,
- crystals:0,prestiges:0,runEarned:0,theme:'mint',sound:true,reduce:false,
+ crystals:0,prestiges:0,runEarned:0,theme:'mint',sound:true,vibro:true,cutscenes:true,reduce:false,
  stats:{spins:0,earned:0,ads:0,best:0,rarest:null,rarestTier:-1,tiers:[0,0,0,0,0,0,0,0,0],t0:Date.now()}};
 let S=load();
 function load(){
   try{
-    const r=JSON.parse(localStorage.getItem('chislo_dany_v1'));
+    const r=JSON.parse(localStorage.getItem('chislo_dany_v2'));
     if(!r)return JSON.parse(JSON.stringify(DEF));
     const o=JSON.parse(JSON.stringify(DEF));
     Object.assign(o,r);
@@ -528,17 +582,16 @@ function load(){
   }catch(e){return JSON.parse(JSON.stringify(DEF))}
 }
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v1',JSON.stringify(S))}catch(e){}},400)}
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v2',JSON.stringify(S))}catch(e){}},400)}
 
-/* ================= УТИЛИТЫ ================= */
 const $=s=>document.querySelector(s);
 const fmt=n=>Math.floor(n).toLocaleString('ru-RU');
 const fmtShort=n=>n>=1e9?(n/1e9).toFixed(2).replace('.',',')+' млрд':n>=1e6?(n/1e6).toFixed(1).replace('.',',')+' млн':n>=1e4?(n/1e3).toFixed(1).replace('.',',')+' тыс':fmt(n);
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
-const vib=p=>{try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}};
+function vib(p){if(!S.vibro)return;try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show')},2300)}
+const wait=ms=>new Promise(function(r){setTimeout(r,ms)});
 
-/* ================= ЗВУК ================= */
 let AC=null;
 function ac(){if(!S.sound)return null;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}catch(e){return null}}
 function tone(f,dur,type,g,delay){
@@ -555,11 +608,11 @@ const sfx={
  lock(){tone(760,.1,'triangle',.1)},
  coin(){tone(920,.09,'sine',.1);tone(1380,.14,'sine',.09,.07)},
  fanfare(t){const base=[523,659,784,1046,1318];for(let i=0;i<Math.min(5,3+t);i++)tone(base[i]*(t>=6?1.5:1),.22,'triangle',.11,i*.09);if(t>=4)tone(1568,.5,'sine',.1,.5)},
+ boom(){tone(65,.7,'sine',.3);tone(58,.9,'sine',.2,.08)},
  adJingle(){tone(392,.18,'triangle',.1);tone(523,.18,'triangle',.1,.18);tone(659,.3,'triangle',.11,.36)},
  lose(){tone(220,.25,'sawtooth',.06)}
 };
 
-/* ================= ЭКОНОМИКА ================= */
 const spinCost=()=>Math.round(25*(1+S.luck*0.3));
 const luckPool=()=>S.luck+S.crystals*3;
 function tierWeights(){const p=luckPool();return TIERS.map(function(t,i){return t.w*(1+p*KL[i])})}
@@ -589,7 +642,6 @@ function draw(){
   return{num:num,idx:idx,traits:traits,value:value};
 }
 
-/* ================= СОСТОЯНИЕ ================= */
 let spinning=false,paused=false,adOpen=false,autoNext=0,hist=[];
 
 function updCoins(pulse){
@@ -620,7 +672,6 @@ function updSpinBtn(){
   }
 }
 
-/* ================= МАШИНА ЦИФР ================= */
 function buildDigits(box,str,cls){
   box.innerHTML='';const spans=[];
   for(let i=0;i<str.length;i++){
@@ -650,15 +701,21 @@ function scramble(box,finalStr,dur){
     });
   });
 }
+function showResultOnMachine(res){
+  const t=TIERS[res.idx];
+  buildDigits($('#digits'),String(res.num));
+  $('#machine').style.boxShadow='0 0 34px '+t.col+'44, inset 0 0 22px '+t.col+'22';
+  inlineResult(res);
+  renderHistory();
+}
 
-/* ================= СПИН ================= */
 $('#spinBtn').addEventListener('click',function(){
   ac();sfx.click();
   if(spinning||adOpen)return;
   if(S.firstFree){S.firstFree=false;save();startSpin();return}
   const c=spinCost();
   if(S.coins>=c){S.coins-=c;updCoins();startSpin()}
-  else openAd(); /* монет не хватает -> реклама, после неё 1 бесплатный спин */
+  else openAd();
 });
 
 async function startSpin(){
@@ -667,34 +724,42 @@ async function startSpin(){
   S.stats.spins++;S.stats.tiers[res.idx]++;save();
   $('#resRow').innerHTML='';
   $('#machine').style.boxShadow='none';
+
+  if(res.idx>=2&&S.cutscenes){
+    tone(420,.15,'sine',.08);vib(12);
+    await wait(220);
+    finishSpin(res,true);
+    return;
+  }
   const dur=spinDur();
   if(dur===0){
     buildDigits($('#digits'),String(res.num));
     tone(660,.08,'triangle',.08);
-    await new Promise(function(r){setTimeout(r,140)});
+    await wait(140);
   }else{
     await scramble($('#digits'),String(res.num),dur);
   }
-  finishSpin(res);
+  finishSpin(res,false);
 }
 
-function finishSpin(res){
+function finishSpin(res,viaCutscene){
   const t=TIERS[res.idx];
   S.coins+=res.value;S.runEarned+=res.value;S.stats.earned+=res.value;
   if(res.value>S.stats.best)S.stats.best=res.value;
   if(S.stats.rarest===null||res.num<S.stats.rarest){S.stats.rarest=res.num;S.stats.rarestTier=res.idx}
   hist.unshift(res);if(hist.length>6)hist.pop();
   save();
-  updCoins(true);coinFly('+'+fmtShort(res.value));sfx.coin();vib(15);
-  $('#machine').style.boxShadow='0 0 34px '+t.col+'44, inset 0 0 22px '+t.col+'22';
-  renderHistory();
-  if(res.idx>=2&&S.speed<25){
-    spinning=false;updSpinBtn();
-    setTimeout(function(){openCutscene(res)},380);
+  spinning=false;updSpinBtn();
+  if(viaCutscene){
+    openCutscene(res,function(){
+      showResultOnMachine(res);
+      updCoins(true);
+      renderUpgrades();renderPrestige();scheduleAuto();
+    });
   }else{
-    inlineResult(res);
-    spinning=false;updSpinBtn();renderUpgrades();renderPrestige();
-    scheduleAuto();
+    updCoins(true);coinFly('+'+fmtShort(res.value));sfx.coin();vib(15);
+    showResultOnMachine(res);
+    renderUpgrades();renderPrestige();scheduleAuto();
   }
 }
 function inlineResult(res){
@@ -708,43 +773,65 @@ function renderHistory(){
   $('#historyRow').innerHTML=hist.map(function(h){return '<span class="hChip" style="--tc:'+TIERS[h.idx].col+'">'+fmtShort(h.num)+'</span>'}).join('');
 }
 
-/* ================= КАТСЦЕНА ================= */
 let csResolve=null,csMin=0,csAuto=0;
-function openCutscene(res){
-  const t=TIERS[res.idx];const cs=$('#cutscene');
-  cs.classList.remove('hidden');document.body.classList.add('cut');
+function openCutscene(res,onDone){
+  const t=TIERS[res.idx],cs=$('#cutscene'),cfg=CS_CFG[res.idx];
+  for(let i=2;i<=8;i++)cs.classList.remove('csT'+i);
+  cs.classList.add('csT'+res.idx);
+  cs.classList.toggle('halo',!!cfg.halo);
   cs.style.setProperty('--tc',t.col);
+  cs.classList.remove('hidden');
+  document.body.classList.add('cut');
   $('#csTop').textContent=CS_LABEL[res.idx];
   $('#csTop').style.animation='none';void $('#csTop').offsetWidth;$('#csTop').style.animation='';
+  $('#csRing').classList.remove('go');
+  $('#csFlash').classList.remove('go');
+  $('#csNum').classList.remove('glitch');
+  $('#csNum').innerHTML='';
+  $('#csChips').innerHTML='';
   cs.querySelectorAll('.particle').forEach(function(p){p.remove()});
   if(!S.reduce){
-    for(let i=0;i<26;i++){
+    const pal=['#ff004c','#ff9a00','#ffe600','#00ff85','#00cfff','#8f5bff','#ff00d4'];
+    for(let i=0;i<cfg.parts;i++){
       const p=document.createElement('div');p.className='particle';
       const sz=rnd(3,7);p.style.width=sz+'px';p.style.height=sz+'px';p.style.left=rnd(2,98)+'%';
+      if(res.idx===8)p.style.background=pal[i%pal.length];
       p.style.setProperty('--dur',(rnd(26,52)/10)+'s');
       p.style.setProperty('--del',(rnd(0,22)/10)+'s');
       p.style.setProperty('--dx',rnd(-90,90)+'px');
       cs.appendChild(p);
     }
   }
-  if(res.idx>=4){document.body.classList.add('shake');setTimeout(function(){document.body.classList.remove('shake')},550);vib([30,40,60])}
-  scramble($('#csNum'),String(res.num),1500).then(function(){sfx.fanfare(res.idx);vib(30)});
+  setTimeout(function(){
+    scramble($('#csNum'),String(res.num),cfg.dur).then(function(){
+      sfx.fanfare(res.idx);
+      if(cfg.boom)sfx.boom();
+      if(res.idx===8){tone(1568,.4,'sine',.1,.55);tone(2093,.5,'sine',.09,.75)}
+      vib(res.idx>=6?[40,60,40,60,120]:res.idx>=4?[30,50,30]:30);
+      if(cfg.ring){void $('#csRing').offsetWidth;$('#csRing').classList.add('go')}
+      if(cfg.flash){void $('#csFlash').offsetWidth;$('#csFlash').classList.add('go')}
+      if(cfg.glitch)$('#csNum').classList.add('glitch');
+      if(res.idx>=5){document.body.classList.add('shake');setTimeout(function(){document.body.classList.remove('shake')},550)}
+    });
+  },cfg.delay);
+  const chipStart=(cfg.delay+cfg.dur)/1000+0.4;
   const chips=[];
   chips.push('<span class="chip tierBig">'+t.name+'</span>');
   res.traits.forEach(function(x){chips.push('<span class="chip" style="color:'+t.col+';border-color:'+t.col+'66">✦ '+x.n+' ×'+x.m+'</span>')});
   chips.push('<span class="chip" id="csVal">+ 0 ₵</span>');
   $('#csChips').innerHTML=chips.map(function(c,i){
-    return c.replace('class="chip','style="animation-delay:'+(1.2+i*.5)+'s" class="chip');
+    return c.replace('class="chip','style="animation-delay:'+(chipStart+i*.5)+'s" class="chip');
   }).join('');
-  const valDelay=1200+chips.length*500+300;
-  setTimeout(function(){countUp($('#csVal'),res.value)},valDelay);
-  csMin=Date.now()+2600;
+  const valDelay=(chipStart+chips.length*.5)*1000+300;
+  setTimeout(function(){if($('#csVal'))countUp($('#csVal'),res.value)},valDelay);
+  csMin=Date.now()+valDelay;
   clearTimeout(csAuto);
-  csAuto=setTimeout(closeCutscene,Math.max(6500,valDelay+2500));
+  csAuto=setTimeout(closeCutscene,valDelay+3200);
   csResolve=function(){
     cs.classList.add('hidden');document.body.classList.remove('cut');
     clearTimeout(csAuto);
-    renderUpgrades();renderPrestige();scheduleAuto();save();
+    if(onDone)onDone();
+    save();
   };
 }
 $('#cutscene').addEventListener('click',function(){
@@ -761,17 +848,25 @@ function countUp(el,to){
   requestAnimationFrame(step);
 }
 
-/* ================= РЕКЛАМА (15 сек -> 1 бесплатный спин) ================= */
+/* ====== РЕКЛАМА: прогресс-бар больше не мигает, кнопки работают ====== */
 let adInt=null;
+function closeAd(){
+  clearInterval(adInt);
+  $('#ad').classList.add('hidden');
+  adOpen=false;
+  S.stats.ads++;save();
+  toast('🎁 Получен 1 бесплатный прокрут!');
+  setTimeout(function(){if(!spinning)startSpin()},450);
+}
 function openAd(){
   adOpen=true;sfx.adJingle();
   const ad=$('#ad');ad.classList.remove('hidden');
   $('#adClose').classList.add('hidden');
   $('#adTimer').textContent='пропустить через 15';
   const pf=$('#adProgFill');
-  pf.style.transition='none';pf.style.width='0%';
+  pf.classList.remove('go');
   void pf.offsetWidth;
-  pf.style.transition='width 15s linear';pf.style.width='100%';
+  pf.classList.add('go');
   ad.querySelectorAll('.adScene').forEach(function(s){s.style.animation='none';void s.offsetWidth;s.style.animation=''});
   let left=15;
   clearInterval(adInt);
@@ -781,21 +876,19 @@ function openAd(){
     else{clearInterval(adInt);$('#adTimer').textContent='можно закрыть';$('#adClose').classList.remove('hidden')}
   },1000);
 }
-$('#adClose').addEventListener('click',function(){
-  clearInterval(adInt);
-  $('#ad').classList.add('hidden');
-  adOpen=false;
-  S.stats.ads++;save();
-  toast('🎁 Получен 1 бесплатный прокрут!');
-  setTimeout(function(){if(!spinning)startSpin()},450); /* сразу крутится 1 раз бесплатно */
+$('#adClose').addEventListener('click',closeAd);
+$('#adClaim').addEventListener('click',function(){
+  if(!$('#adClose').classList.contains('hidden'))closeAd();
+});
+$('#adOpenSite').addEventListener('click',function(){
+  window.open('https://dany.run.place','_blank');
 });
 
-/* ================= УЛУЧШЕНИЯ ================= */
 const UPS=[
  {id:'luck',ico:'🍀',name:'Удача',desc:'Редкие числа выпадают чаще. Каждый уровень немного повышает цену крутки.',max:60,
   cost:function(l){return Math.round(40*Math.pow(1.55,l))},
   eff:function(){return 'шанс редкого+ '+rareChance().toFixed(2)+'% • пул удачи '+luckPool()}},
- {id:'speed',ico:'⚡',name:'Скорость крутки',desc:'Число крутится быстрее, паузы короче. Ур. 25 — мгновенно и без катсцен.',max:25,
+ {id:'speed',ico:'⚡',name:'Скорость крутки',desc:'Число крутится быстрее. Ур. 25 — мгновенно (катсцены отключаются, их можно вернуть в настройках).',max:25,
   cost:function(l){return Math.round(60*Math.pow(1.62,l))},
   eff:function(){return S.speed>=25?'МАКСИМУМ: мгновенная крутка':'длительность '+(spinDur()/1000).toFixed(1)+' сек'}},
  {id:'mult',ico:'💎',name:'Цена чисел',desc:'+12% к стоимости каждого выпавшего числа.',max:40,
@@ -830,9 +923,10 @@ function buy(id){
   else if(id==='speed')S.speed++;
   else if(id==='mult')S.mult++;
   else{if(S.auto===0)S.auto=1;else S.autoInt++}
+  if(id==='speed'&&S.speed===25){S.cutscenes=false;syncSwitches()}
   sfx.coin();vib(12);save();
   updCoins(true);updSpinBtn();renderUpgrades();renderAutoCard();renderPrestige();
-  if(id==='speed'&&S.speed===25)toast('⚡ Максимум скорости: катсцены отключены!');
+  if(id==='speed'&&S.speed===25)toast('⚡ Максимум скорости! Катсцены можно вернуть в настройках');
   else toast('Улучшено: '+u.name);
 }
 function renderUpgrades(){
@@ -855,7 +949,6 @@ function renderUpgrades(){
   });
 }
 
-/* ================= АВТОСПИН ================= */
 function renderAutoCard(){
   const c=$('#autoCard');
   if(S.auto===0){c.classList.add('hidden');return}
@@ -892,7 +985,6 @@ setInterval(function(){
   }
 },250);
 
-/* ================= ПРЕСТИЖ ================= */
 function crystalsFor(e){return Math.floor(e/PRESTIGE_BASE)}
 function renderPrestige(){
   const gain=crystalsFor(S.runEarned);
@@ -920,7 +1012,6 @@ $('#prBtn').addEventListener('click',function(){
   });
 });
 
-/* ================= СТАТИСТИКА ================= */
 function renderStats(){
   $('#stSpins').textContent=fmt(S.stats.spins);
   $('#stEarned').textContent=fmtShort(S.stats.earned);
@@ -940,7 +1031,6 @@ function renderStats(){
   $('#stTiers').innerHTML=rows;
 }
 
-/* ================= НАВБАР ================= */
 const tabIdx={gen:0,up:1,pre:2,sta:3};
 function setTab(id){
   document.querySelectorAll('main section').forEach(function(s){s.classList.remove('active')});
@@ -958,7 +1048,6 @@ document.querySelectorAll('.navBtn').forEach(function(b){
   b.addEventListener('click',function(){setTab(b.dataset.tab)});
 });
 
-/* ================= НАСТРОЙКИ ================= */
 function openSheet(){$('#backdrop').classList.add('show');$('#sheet').classList.add('show')}
 function closeSheet(){$('#backdrop').classList.remove('show');$('#sheet').classList.remove('show')}
 $('#gearBtn').addEventListener('click',function(){sfx.click();openSheet()});
@@ -976,19 +1065,23 @@ function applyTheme(){
   document.body.classList.toggle('rm',S.reduce);
 }
 $('#swSound').addEventListener('click',function(){S.sound=!S.sound;save();syncSwitches();if(S.sound)sfx.coin()});
+$('#swVibro').addEventListener('click',function(){S.vibro=!S.vibro;save();syncSwitches();if(S.vibro)vib(30)});
+$('#swCut').addEventListener('click',function(){S.cutscenes=!S.cutscenes;save();syncSwitches();
+  toast(S.cutscenes?'Катсцены включены':'Катсцены выключены')});
 $('#swMotion').addEventListener('click',function(){S.reduce=!S.reduce;save();syncSwitches();applyTheme()});
 function syncSwitches(){
   $('#swSound').classList.toggle('on',S.sound);
+  $('#swVibro').classList.toggle('on',S.vibro);
+  $('#swCut').classList.toggle('on',S.cutscenes);
   $('#swMotion').classList.toggle('on',S.reduce);
 }
 $('#resetBtn').addEventListener('click',function(){
   closeSheet();
   modal('Сбросить прогресс?','Полностью удалит всё: монеты, улучшения, престиж и статистику. Это нельзя отменить.',function(){
-    localStorage.removeItem('chislo_dany_v1');location.reload();
+    localStorage.removeItem('chislo_dany_v2');location.reload();
   });
 });
 
-/* ================= МОДАЛКА ================= */
 let mCb=null;
 function modal(title,text,ok){
   $('#mTitle').textContent=title;$('#mText').textContent=text;
@@ -997,7 +1090,6 @@ function modal(title,text,ok){
 $('#mOk').addEventListener('click',function(){$('#modalWrap').classList.remove('show');if(mCb)mCb()});
 $('#mCancel').addEventListener('click',function(){$('#modalWrap').classList.remove('show')});
 
-/* ================= ФУЛЛСКРИН / СТАРТ ================= */
 const isTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
 const fsEl=document.documentElement;
 const fsCan=!!(fsEl.requestFullscreen||fsEl.webkitRequestFullscreen);
