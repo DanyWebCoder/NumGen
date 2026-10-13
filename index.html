@@ -77,14 +77,13 @@ header{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-are
 #logo b{color:var(--acc)}
 #coinPill{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:100px;font-weight:800;font-size:15px;
   background:linear-gradient(135deg,rgba(255,210,74,.16),rgba(255,157,43,.07));border:1px solid rgba(255,210,74,.35);
-  backdrop-filter:blur(14px);position:relative;font-variant-numeric:tabular-nums;overflow:hidden;flex-shrink:0;
-  white-space:nowrap;min-width:fit-content;transform:translateZ(0)}
+  backdrop-filter:blur(14px);position:relative;font-variant-numeric:tabular-nums;overflow:hidden;flex-shrink:0}
 #coinPill .coin{font-size:17px}
 #coinPill.pulse{animation:coinPulse .45s ease}
 @keyframes coinPulse{40%{filter:brightness(1.5) saturate(1.4)}}
 .coinFly{position:fixed;z-index:300;font-weight:800;font-size:14px;color:var(--gold);pointer-events:none;
-  text-shadow:0 2px 8px rgba(0,0,0,.6);animation:flyUp 1.1s ease-out forwards;transform:translateZ(0)}
-@keyframes flyUp{to{transform:translateY(-56px) translateZ(0);opacity:0}}
+  text-shadow:0 2px 8px rgba(0,0,0,.6);animation:flyUp 1.1s ease-out forwards}
+@keyframes flyUp{to{transform:translateY(-56px);opacity:0}}
 
 main{flex:1;overflow-y:auto;overflow-x:hidden;padding:6px 16px 130px;-webkit-overflow-scrolling:touch;position:relative;z-index:5}
 section{display:none;animation:tabIn .38s cubic-bezier(.2,.9,.3,1);overflow-x:hidden}
@@ -357,11 +356,31 @@ button.adGo{border:none;cursor:pointer}
 #mCancel{background:rgba(255,255,255,.09)}
 #mOk{background:var(--acc);color:#06231a}
 
-#toast{position:fixed;top:calc(16px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-90px);z-index:300;
-  padding:12px 20px;border-radius:100px;font-size:13.5px;font-weight:700;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;
-  background:rgba(16,22,24,.9);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(16px);
-  transition:transform .45s cubic-bezier(.3,1.4,.4,1)}
-#toast.show{transform:translateX(-50%) translateY(0)}
+#toast{
+  position:fixed;
+  top:calc(16px + env(safe-area-inset-top));
+  left:50%;
+  transform:translateX(-50%) translateY(-150px);
+  z-index:300;
+  padding:12px 20px;
+  border-radius:100px;
+  font-size:13.5px;
+  font-weight:700;
+  white-space:nowrap;
+  max-width:92vw;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  background:rgba(16,22,24,.95);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(16px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .45s cubic-bezier(.3,1.4,.4,1), opacity .45s ease;
+}
+#toast.show{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+}
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.05s!important}}
 body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
@@ -648,16 +667,11 @@ function updCoins(pulse){
   if(pulse){const p=$('#coinPill');p.classList.remove('pulse');void p.offsetWidth;p.classList.add('pulse')}
 }
 function coinFly(txt){
-  const pill=$('#coinPill');
-  if(!pill||pill.offsetWidth===0)return;
-  const p=pill.getBoundingClientRect();
-  if(p.top<0||p.left<0)return;
+  const p=$('#coinPill').getBoundingClientRect();
   const el=document.createElement('div');
   el.className='coinFly';el.textContent=txt;
-  el.style.left=(p.left+p.width/2-20)+'px';
-  el.style.top=(p.top+p.height+4)+'px';
-  document.body.appendChild(el);
-  setTimeout(function(){if(el.parentNode)el.remove()},1200);
+  el.style.left=(p.left+p.width/2-20)+'px';el.style.top=(p.top+30)+'px';
+  document.body.appendChild(el);setTimeout(function(){el.remove()},1200);
 }
 
 function updSpinBtn(){
@@ -758,8 +772,6 @@ function finishSpin(res,viaCutscene){
     openCutscene(res,function(){
       showResultOnMachine(res);
       updCoins(true);
-      coinFly('+'+fmtShort(res.value));
-      sfx.coin();vib(15);
       renderUpgrades();renderPrestige();scheduleAuto();
     });
   }else{
@@ -861,7 +873,7 @@ function closeAd(){
   adOpen=false;
   S.stats.ads++;save();
   toast('🎁 Получен 1 бесплатный прокрут!');
-  setTimeout(function(){if(!spinning)startSpin()},650);
+  setTimeout(function(){if(!spinning)startSpin()},450);
 }
 function openAd(){
   adOpen=true;sfx.adJingle();
