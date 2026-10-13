@@ -77,13 +77,14 @@ header{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-are
 #logo b{color:var(--acc)}
 #coinPill{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:100px;font-weight:800;font-size:15px;
   background:linear-gradient(135deg,rgba(255,210,74,.16),rgba(255,157,43,.07));border:1px solid rgba(255,210,74,.35);
-  backdrop-filter:blur(14px);position:relative;font-variant-numeric:tabular-nums;overflow:hidden;flex-shrink:0}
+  backdrop-filter:blur(14px);position:relative;font-variant-numeric:tabular-nums;overflow:hidden;flex-shrink:0;
+  white-space:nowrap;min-width:fit-content;transform:translateZ(0)}
 #coinPill .coin{font-size:17px}
 #coinPill.pulse{animation:coinPulse .45s ease}
 @keyframes coinPulse{40%{filter:brightness(1.5) saturate(1.4)}}
 .coinFly{position:fixed;z-index:300;font-weight:800;font-size:14px;color:var(--gold);pointer-events:none;
-  text-shadow:0 2px 8px rgba(0,0,0,.6);animation:flyUp 1.1s ease-out forwards}
-@keyframes flyUp{to{transform:translateY(-56px);opacity:0}}
+  text-shadow:0 2px 8px rgba(0,0,0,.6);animation:flyUp 1.1s ease-out forwards;transform:translateZ(0)}
+@keyframes flyUp{to{transform:translateY(-56px) translateZ(0);opacity:0}}
 
 main{flex:1;overflow-y:auto;overflow-x:hidden;padding:6px 16px 130px;-webkit-overflow-scrolling:touch;position:relative;z-index:5}
 section{display:none;animation:tabIn .38s cubic-bezier(.2,.9,.3,1);overflow-x:hidden}
@@ -527,7 +528,7 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
   <div class="setRow" id="rowCut"><div>Катсцены<small>эпичные сцены для редких чисел (доступно после 25 ур. скорости)</small></div><div class="switch" id="swCut"></div></div>
   <div class="setRow" id="rowMotion"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
   <button class="dangerBtn" id="resetBtn">Сбросить весь прогресс</button>
-  <div class="credit">ЧИСЛО • версия 1.3<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
+  <div class="credit">ЧИСЛО • версия 1.4<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
 </div>
 
 <div id="modalWrap"><div id="modalBox">
@@ -570,7 +571,7 @@ const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:
 let S=load();
 function load(){
   try{
-    const r=JSON.parse(localStorage.getItem('chislo_dany_v3'));
+    const r=JSON.parse(localStorage.getItem('chislo_dany_v4'));
     if(!r)return JSON.parse(JSON.stringify(DEF));
     const o=JSON.parse(JSON.stringify(DEF));
     Object.assign(o,r);
@@ -580,7 +581,7 @@ function load(){
   }catch(e){return JSON.parse(JSON.stringify(DEF))}
 }
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v3',JSON.stringify(S))}catch(e){}},400)}
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v4',JSON.stringify(S))}catch(e){}},400)}
 
 const $=s=>document.querySelector(s);
 const fmt=n=>Math.floor(n).toLocaleString('ru-RU');
@@ -647,11 +648,16 @@ function updCoins(pulse){
   if(pulse){const p=$('#coinPill');p.classList.remove('pulse');void p.offsetWidth;p.classList.add('pulse')}
 }
 function coinFly(txt){
-  const p=$('#coinPill').getBoundingClientRect();
+  const pill=$('#coinPill');
+  if(!pill||pill.offsetWidth===0)return;
+  const p=pill.getBoundingClientRect();
+  if(p.top<0||p.left<0)return;
   const el=document.createElement('div');
   el.className='coinFly';el.textContent=txt;
-  el.style.left=(p.left+p.width/2-20)+'px';el.style.top=(p.top+30)+'px';
-  document.body.appendChild(el);setTimeout(function(){el.remove()},1200);
+  el.style.left=(p.left+p.width/2-20)+'px';
+  el.style.top=(p.top+p.height+4)+'px';
+  document.body.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.remove()},1200);
 }
 
 function updSpinBtn(){
@@ -752,6 +758,8 @@ function finishSpin(res,viaCutscene){
     openCutscene(res,function(){
       showResultOnMachine(res);
       updCoins(true);
+      coinFly('+'+fmtShort(res.value));
+      sfx.coin();vib(15);
       renderUpgrades();renderPrestige();scheduleAuto();
     });
   }else{
@@ -853,7 +861,7 @@ function closeAd(){
   adOpen=false;
   S.stats.ads++;save();
   toast('🎁 Получен 1 бесплатный прокрут!');
-  setTimeout(function(){if(!spinning)startSpin()},450);
+  setTimeout(function(){if(!spinning)startSpin()},650);
 }
 function openAd(){
   adOpen=true;sfx.adJingle();
@@ -1078,7 +1086,7 @@ function syncSwitches(){
 $('#resetBtn').addEventListener('click',function(){
   closeSheet();
   modal('Сбросить прогресс?','Полностью удалит всё: монеты, улучшения, престиж и статистику. Это нельзя отменить.',function(){
-    localStorage.removeItem('chislo_dany_v3');location.reload();
+    localStorage.removeItem('chislo_dany_v4');location.reload();
   });
 });
 
