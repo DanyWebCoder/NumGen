@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#060809">
-<title>ЧИСЛО — генератор удачи 1–1 000 000 000</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#060809">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ЧИСЛО">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23060809'/%3E%3Crect x='14' y='14' width='152' height='152' rx='30' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%239ff7d8'/%3E%3Cstop offset='1' stop-color='%232fe6a7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='90' y='120' font-size='98' font-weight='900' font-family='Arial Black,sans-serif' text-anchor='middle' fill='%2306231a'%3E№%3C/text%3E%3C/svg%3E">
+<title>ЧИСЛО — генератор удачи 1–1 000 000 000</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -553,7 +552,7 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
   <div class="setRow" id="rowCut"><div>Катсцены<small>эпичные сцены для редких чисел (доступно после 25 ур. скорости)</small></div><div class="switch" id="swCut"></div></div>
   <div class="setRow" id="rowMotion"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
   <button class="dangerBtn" id="resetBtn">Сбросить весь прогресс</button>
-  <div class="credit">ЧИСЛО • версия 1.4<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
+  <div class="credit">ЧИСЛО • версия 1.5<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
 </div>
 
 <div id="modalWrap"><div id="modalBox">
@@ -596,7 +595,7 @@ const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:
 let S=load();
 function load(){
   try{
-    const r=JSON.parse(localStorage.getItem('chislo_dany_v4'));
+    const r=JSON.parse(localStorage.getItem('chislo_dany_v5'));
     if(!r)return JSON.parse(JSON.stringify(DEF));
     const o=JSON.parse(JSON.stringify(DEF));
     Object.assign(o,r);
@@ -606,7 +605,7 @@ function load(){
   }catch(e){return JSON.parse(JSON.stringify(DEF))}
 }
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v4',JSON.stringify(S))}catch(e){}},400)}
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v5',JSON.stringify(S))}catch(e){}},400)}
 
 const $=s=>document.querySelector(s);
 const fmt=n=>Math.floor(n).toLocaleString('ru-RU');
@@ -1104,7 +1103,7 @@ function syncSwitches(){
 $('#resetBtn').addEventListener('click',function(){
   closeSheet();
   modal('Сбросить прогресс?','Полностью удалит всё: монеты, улучшения, престиж и статистику. Это нельзя отменить.',function(){
-    localStorage.removeItem('chislo_dany_v4');location.reload();
+    localStorage.removeItem('chislo_dany_v5');location.reload();
   });
 });
 
@@ -1119,38 +1118,54 @@ $('#mCancel').addEventListener('click',function(){$('#modalWrap').classList.remo
 const isTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
 const fsEl=document.documentElement;
 const fsCan=!!(fsEl.requestFullscreen||fsEl.webkitRequestFullscreen);
+const isPWA=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true||window.location.search.includes('pwa=true');
 let started=false;
+
 function goFS(){
   try{
     const p=fsEl.requestFullscreen?fsEl.requestFullscreen():fsEl.webkitRequestFullscreen();
     if(p&&p.catch)p.catch(function(){});
   }catch(e){}
 }
+
 if(!isTouch){
   $('#unsup').classList.remove('hidden');
   $('#unsupAnyway').addEventListener('click',function(){$('#unsup').classList.add('hidden');boot()});
 }else{
   boot();
 }
+
 function boot(){
-  if(fsCan)$('#gate').classList.remove('hidden');
-  else startGame();
+  if(isPWA){
+    startGame();
+  }else if(fsCan){
+    $('#gate').classList.remove('hidden');
+  }else{
+    startGame();
+  }
 }
+
 $('#gateBtn').addEventListener('click',function(){ac();goFS();startGame()});
+
 function startGame(){
-  if(started)return;started=true;
+  if(started)return;
+  started=true;
   $('#gate').classList.add('hidden');
   $('#app').classList.remove('hidden');
   applyTheme();syncSwitches();renderThemes();renderSettings();
   updCoins();updSpinBtn();renderUpgrades();renderAutoCard();renderPrestige();renderHistory();
 }
-if(fsCan){
+
+if(fsCan && !isPWA){
   document.addEventListener('fullscreenchange',function(){
     if(started&&!document.fullscreenElement&&!adOpen&&!$('#sheet').classList.contains('show')){
-      paused=true;document.body.classList.add('paused');$('#pauseOv').classList.remove('hidden');
+      paused=true;
+      document.body.classList.add('paused');
+      $('#pauseOv').classList.remove('hidden');
     }
   });
 }
+
 $('#pauseBtn').addEventListener('click',function(){
   goFS();
   setTimeout(function(){
@@ -1159,29 +1174,16 @@ $('#pauseBtn').addEventListener('click',function(){
     paused=false;
   },250);
 });
+
 document.addEventListener('visibilitychange',function(){if(document.hidden)save()});
 
 setTab('gen');
-</script>
-    <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then((registration) => {
-      console.log('SW зарегистрирован:', registration.scope);
-      
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('Доступно обновление игры');
-          }
-        });
-      });
-    }).catch((err) => {
-      console.warn('SW не зарегистрирован:', err);
-    });
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(){});
   });
 }
-    </script>
+</script>
 </body>
 </html>
