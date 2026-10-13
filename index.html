@@ -64,29 +64,29 @@ html[data-theme="ultra"]{--acc:#8f7bff;--acc2:#cabfff;--bgA:rgba(143,123,255,.16
 .ghostLink{margin-top:20px;font-size:13px;color:#7c8b93;text-decoration:underline;text-underline-offset:3px}
 .hidden{display:none!important}
 
-#app{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;opacity:1;transition:opacity .45s,filter .45s}
+#app{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;opacity:1;transition:opacity .45s,filter .45s;overflow:hidden}
 body.cut #app{opacity:0;filter:blur(6px);pointer-events:none}
 body.paused #app{filter:blur(10px);pointer-events:none}
 
-header{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 14px 10px;position:relative;z-index:20}
+header{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 14px 10px;position:relative;z-index:20;overflow:hidden}
 .iconBtn{width:44px;height:44px;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;
   background:var(--glass);border:1px solid var(--glassB);backdrop-filter:blur(14px);transition:transform .15s}
 .iconBtn:active{transform:scale(.9)}
 .iconBtn svg{width:21px;height:21px;stroke:#dfe8ea;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-#logo{font-family:'Unbounded';font-weight:900;font-size:17px;letter-spacing:.5px;flex:1;text-align:center}
+#logo{font-family:'Unbounded';font-weight:900;font-size:17px;letter-spacing:.5px;flex:1;text-align:center;overflow:hidden}
 #logo b{color:var(--acc)}
 #coinPill{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:100px;font-weight:800;font-size:15px;
   background:linear-gradient(135deg,rgba(255,210,74,.16),rgba(255,157,43,.07));border:1px solid rgba(255,210,74,.35);
-  backdrop-filter:blur(14px);position:relative;font-variant-numeric:tabular-nums}
+  backdrop-filter:blur(14px);position:relative;font-variant-numeric:tabular-nums;overflow:hidden;flex-shrink:0}
 #coinPill .coin{font-size:17px}
-#coinPill.pulse{animation:coinPulse .45s cubic-bezier(.3,1.6,.5,1)}
-@keyframes coinPulse{40%{transform:scale(1.14)}}
+#coinPill.pulse{animation:coinPulse .45s ease}
+@keyframes coinPulse{40%{filter:brightness(1.5) saturate(1.4)}}
 .coinFly{position:fixed;z-index:300;font-weight:800;font-size:14px;color:var(--gold);pointer-events:none;
   text-shadow:0 2px 8px rgba(0,0,0,.6);animation:flyUp 1.1s ease-out forwards}
 @keyframes flyUp{to{transform:translateY(-56px);opacity:0}}
 
 main{flex:1;overflow-y:auto;overflow-x:hidden;padding:6px 16px 130px;-webkit-overflow-scrolling:touch;position:relative;z-index:5}
-section{display:none;animation:tabIn .38s cubic-bezier(.2,.9,.3,1)}
+section{display:none;animation:tabIn .38s cubic-bezier(.2,.9,.3,1);overflow-x:hidden}
 section.active{display:block}
 @keyframes tabIn{from{opacity:0;transform:translateY(14px) scale(.985)}}
 .secTitle{font-family:'Unbounded';font-weight:800;font-size:21px;margin:10px 2px 4px}
@@ -95,7 +95,7 @@ section.active{display:block}
 #machine{padding:20px 14px 18px;position:relative;overflow:hidden;transition:box-shadow .5s,border-color .5s}
 #machine::before{content:'';position:absolute;inset:0;background:radial-gradient(90% 120% at 50% 0%,rgba(47,230,167,.10),transparent 60%);pointer-events:none}
 .mLabel{font-size:11px;font-weight:800;letter-spacing:2.2px;color:#7f9099;text-transform:uppercase;text-align:center;margin-bottom:14px}
-#digits{display:flex;justify-content:center;gap:3px;min-height:56px;align-items:center}
+#digits{display:flex;justify-content:center;gap:3px;min-height:56px;align-items:center;overflow:hidden}
 #digits .digit{font-family:'Unbounded';font-weight:800;font-size:clamp(24px,7.4vw,42px);width:1.18ch;text-align:center;
   padding:6px 0;border-radius:10px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.06);
   font-variant-numeric:tabular-nums;line-height:1.15}
@@ -208,7 +208,6 @@ html[data-theme="ultra"] #bubble{background:rgba(143,123,255,.24);border-color:r
 .navBtn span{font-size:10px;font-weight:800;letter-spacing:.3px}
 .navBtn.active{color:var(--acc2)}
 
-/* ============ КАТСЦЕНА ============ */
 #cutscene{position:fixed;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:30px;background:#040607;overflow:hidden;animation:csIn .35s ease}
 @keyframes csIn{from{opacity:0}}
@@ -273,7 +272,6 @@ html[data-theme="ultra"] #bubble{background:rgba(143,123,255,.24);border-color:r
 body.shake #cutscene{animation:shakeX .5s}
 @keyframes shakeX{20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
 
-/* ============ РЕКЛАМА ============ */
 #ad{position:fixed;inset:0;z-index:150;background:#050505;display:flex;flex-direction:column}
 #adTop{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 14px 10px}
 #adTop .adTag{font-size:10.5px;font-weight:800;letter-spacing:1.6px;padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.12);color:#cfd6da}
@@ -329,7 +327,7 @@ button.adGo{border:none;cursor:pointer}
 #backdrop.show{opacity:1;pointer-events:auto}
 #sheet{position:fixed;left:12px;right:12px;bottom:0;z-index:95;border-radius:26px 26px 0 0;padding:20px 20px calc(26px + env(safe-area-inset-bottom));
   background:rgba(14,19,21,.92);border:1px solid rgba(255,255,255,.11);border-bottom:none;
-  backdrop-filter:blur(30px) saturate(1.6);transform:translateY(105%);transition:transform .42s cubic-bezier(.3,1.1,.35,1)}
+  backdrop-filter:blur(30px) saturate(1.6);transform:translateY(105%);transition:transform .42s cubic-bezier(.3,1.1,.35,1);max-height:85vh;overflow-y:auto}
 #sheet.show{transform:none}
 #sheet .grab{width:42px;height:4px;border-radius:100px;background:rgba(255,255,255,.22);margin:0 auto 16px}
 #sheet h3{font-family:'Unbounded';font-weight:800;font-size:16px;margin-bottom:14px}
@@ -524,12 +522,12 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
   <div class="grab"></div>
   <h3>Настройки</h3>
   <div class="themeRow" id="themeRow"></div>
-  <div class="setRow"><div>Звук<small>тики, фанфары и монеты</small></div><div class="switch" id="swSound"></div></div>
-  <div class="setRow"><div>Вибрация<small>отдача при спинах и наградах</small></div><div class="switch" id="swVibro"></div></div>
-  <div class="setRow"><div>Катсцены<small>эпичные сцены для редких чисел</small></div><div class="switch" id="swCut"></div></div>
-  <div class="setRow"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
+  <div class="setRow" id="rowSound"><div>Звук<small>тики, фанфары и монеты</small></div><div class="switch" id="swSound"></div></div>
+  <div class="setRow" id="rowVibro"><div>Вибрация<small>отдача при спинах и наградах</small></div><div class="switch" id="swVibro"></div></div>
+  <div class="setRow" id="rowCut"><div>Катсцены<small>эпичные сцены для редких чисел (доступно после 25 ур. скорости)</small></div><div class="switch" id="swCut"></div></div>
+  <div class="setRow" id="rowMotion"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
   <button class="dangerBtn" id="resetBtn">Сбросить весь прогресс</button>
-  <div class="credit">ЧИСЛО • версия 1.2<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
+  <div class="credit">ЧИСЛО • версия 1.3<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
 </div>
 
 <div id="modalWrap"><div id="modalBox">
@@ -572,7 +570,7 @@ const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:
 let S=load();
 function load(){
   try{
-    const r=JSON.parse(localStorage.getItem('chislo_dany_v2'));
+    const r=JSON.parse(localStorage.getItem('chislo_dany_v3'));
     if(!r)return JSON.parse(JSON.stringify(DEF));
     const o=JSON.parse(JSON.stringify(DEF));
     Object.assign(o,r);
@@ -582,7 +580,7 @@ function load(){
   }catch(e){return JSON.parse(JSON.stringify(DEF))}
 }
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v2',JSON.stringify(S))}catch(e){}},400)}
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v3',JSON.stringify(S))}catch(e){}},400)}
 
 const $=s=>document.querySelector(s);
 const fmt=n=>Math.floor(n).toLocaleString('ru-RU');
@@ -618,7 +616,7 @@ const luckPool=()=>S.luck+S.crystals*3;
 function tierWeights(){const p=luckPool();return TIERS.map(function(t,i){return t.w*(1+p*KL[i])})}
 function rareChance(){const ws=tierWeights(),tot=ws.reduce(function(a,b){return a+b},0);return ws.slice(2).reduce(function(a,b){return a+b},0)/tot*100}
 const spinDur=()=>S.speed>=25?0:Math.max(550,3300*Math.pow(.92,S.speed));
-const autoInterval=()=>Math.max(2,10-S.autoInt*0.4);
+const autoInterval=()=>Math.max(0.5, 10 - S.autoInt * (9.5/23));
 
 function draw(){
   const ws=tierWeights(),tot=ws.reduce(function(a,b){return a+b},0);
@@ -848,7 +846,6 @@ function countUp(el,to){
   requestAnimationFrame(step);
 }
 
-/* ====== РЕКЛАМА: прогресс-бар больше не мигает, кнопки работают ====== */
 let adInt=null;
 function closeAd(){
   clearInterval(adInt);
@@ -894,7 +891,7 @@ const UPS=[
  {id:'mult',ico:'💎',name:'Цена чисел',desc:'+12% к стоимости каждого выпавшего числа.',max:40,
   cost:function(l){return Math.round(90*Math.pow(1.6,l))},
   eff:function(){return 'множитель ×'+(1+0.12*S.mult).toFixed(2)}},
- {id:'auto',ico:'🤖',name:'Автопрокрут',desc:'Легендарное улучшение. Сам крутит за тебя: ждёт после спина и жмёт кнопку (по умолчанию 10 сек).',max:21,
+ {id:'auto',ico:'🤖',name:'Автопрокрут',desc:'Сам крутит за тебя: ждёт после спина и жмёт кнопку. Макс. уровень 24 = 0.5 сек.',max:24,
   cost:function(l){return l===0?15000:Math.round(2500*Math.pow(1.7,l))},
   eff:function(){return S.auto===0?'не куплено':'интервал '+autoInterval().toFixed(1)+' сек'},legend:true}
 ];
@@ -909,7 +906,7 @@ function costFor(id){
   return UPS.find(function(u){return u.id===id}).cost(getLvl(id));
 }
 function isMaxed(id){
-  if(id==='auto')return S.auto>0&&S.autoInt>=20;
+  if(id==='auto')return S.auto>0&&S.autoInt>=23;
   const u=UPS.find(function(x){return x.id===id});
   return getLvl(id)>=u.max;
 }
@@ -923,7 +920,7 @@ function buy(id){
   else if(id==='speed')S.speed++;
   else if(id==='mult')S.mult++;
   else{if(S.auto===0)S.auto=1;else S.autoInt++}
-  if(id==='speed'&&S.speed===25){S.cutscenes=false;syncSwitches()}
+  if(id==='speed'&&S.speed===25){S.cutscenes=false;save();syncSwitches();renderSettings()}
   sfx.coin();vib(12);save();
   updCoins(true);updSpinBtn();renderUpgrades();renderAutoCard();renderPrestige();
   if(id==='speed'&&S.speed===25)toast('⚡ Максимум скорости! Катсцены можно вернуть в настройках');
@@ -935,7 +932,7 @@ function renderUpgrades(){
     const c=costFor(u.id);
     const afford=S.coins>=c;
     const l=getLvl(u.id);
-    const lvlTxt=u.id==='auto'?(S.auto===0?'—':(S.autoInt>=20?'МАКС':'ур. '+(S.autoInt+1))):('ур. '+l+'/'+u.max);
+    const lvlTxt=u.id==='auto'?(S.auto===0?'—':(S.autoInt>=23?'МАКС':'ур. '+(S.autoInt+1))):('ур. '+l+'/'+u.max);
     const name=(u.id==='auto'&&S.auto===0)?u.name+' — купить':u.name;
     const btn=maxed?'<button class="buyBtn max">МАКС</button>'
       :'<button class="buyBtn'+(afford?'':' no')+'" data-buy="'+u.id+'">'+fmt(c)+' <span class="coin" style="font-size:12px"></span></button>';
@@ -953,7 +950,7 @@ function renderAutoCard(){
   const c=$('#autoCard');
   if(S.auto===0){c.classList.add('hidden');return}
   c.classList.remove('hidden');
-  $('#autoLvlTag').textContent=S.autoInt>=20?'МАКС':'ур. '+(S.autoInt+1);
+  $('#autoLvlTag').textContent=S.autoInt>=23?'МАКС':'ур. '+(S.autoInt+1);
   $('#autoDesc').textContent='каждые '+autoInterval().toFixed(1)+' сек после спина';
   $('#autoTgl').classList.toggle('on',S.autoOn);
 }
@@ -1048,7 +1045,7 @@ document.querySelectorAll('.navBtn').forEach(function(b){
   b.addEventListener('click',function(){setTab(b.dataset.tab)});
 });
 
-function openSheet(){$('#backdrop').classList.add('show');$('#sheet').classList.add('show')}
+function openSheet(){$('#backdrop').classList.add('show');$('#sheet').classList.add('show');renderSettings()}
 function closeSheet(){$('#backdrop').classList.remove('show');$('#sheet').classList.remove('show')}
 $('#gearBtn').addEventListener('click',function(){sfx.click();openSheet()});
 $('#backdrop').addEventListener('click',closeSheet);
@@ -1059,6 +1056,9 @@ function renderThemes(){
   $('#themeRow').querySelectorAll('.sw').forEach(function(b){
     b.addEventListener('click',function(){S.theme=b.dataset.th;applyTheme();save();renderThemes();sfx.click()});
   });
+}
+function renderSettings(){
+  $('#rowCut').style.display = S.speed>=25 ? '' : 'none';
 }
 function applyTheme(){
   document.documentElement.setAttribute('data-theme',S.theme);
@@ -1078,7 +1078,7 @@ function syncSwitches(){
 $('#resetBtn').addEventListener('click',function(){
   closeSheet();
   modal('Сбросить прогресс?','Полностью удалит всё: монеты, улучшения, престиж и статистику. Это нельзя отменить.',function(){
-    localStorage.removeItem('chislo_dany_v2');location.reload();
+    localStorage.removeItem('chislo_dany_v3');location.reload();
   });
 });
 
@@ -1115,7 +1115,7 @@ function startGame(){
   if(started)return;started=true;
   $('#gate').classList.add('hidden');
   $('#app').classList.remove('hidden');
-  applyTheme();syncSwitches();renderThemes();
+  applyTheme();syncSwitches();renderThemes();renderSettings();
   updCoins();updSpinBtn();renderUpgrades();renderAutoCard();renderPrestige();renderHistory();
 }
 if(fsCan){
