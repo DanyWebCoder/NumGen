@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chislo-dany-v2';
+const CACHE_NAME = 'chislo-dany-v1';
 const urlsToCache = [
   './',
   './index.html',
@@ -8,17 +8,19 @@ const urlsToCache = [
   'https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZga6OQ.woff2'
 ];
 
+// Установка: кешируем всё нужное
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache).catch((err) => {
-        console.warn('Cache error:', err);
+        console.warn('Не удалось закешировать:', err);
       });
     })
   );
   self.skipWaiting();
 });
 
+// Активация: удаляем старые кеш-версии
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -34,12 +36,14 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Запросы: сначала кеш, потом сеть
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
+        // Возвращаем из кеша, но параллельно обновляем в фоне
         fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {
@@ -50,6 +54,7 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       
+      // Если нет в кеше — запрашиваем из сети
       return fetch(event.request).then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
           const responseClone = networkResponse.clone();
