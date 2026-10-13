@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chislo-dany-v1';
+const CACHE_NAME = 'chislo-dany-v2';
 const urlsToCache = [
   './',
   './index.html',
@@ -12,7 +12,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache).catch((err) => {
-        console.warn('Не удалось закешировать:', err);
+        console.warn('Cache error:', err);
       });
     })
   );
