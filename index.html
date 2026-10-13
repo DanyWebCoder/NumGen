@@ -58,12 +58,12 @@ html[data-theme="ultra"]{--acc:#8f7bff;--acc2:#cabfff;--bgA:rgba(143,123,255,.16
 .screen p{color:#9fb0b8;font-size:15px;line-height:1.55;max-width:340px}
 .bigBtn{margin-top:26px;font-family:'Unbounded';font-weight:800;font-size:15px;color:#06231a;
   background:linear-gradient(135deg,var(--acc2),var(--acc));padding:18px 34px;border-radius:18px;
-  box-shadow:0 10px 30px rgba(47,230,167,.4);transition:transform .15s}
+  box-shadow:0 10px 30px color-mix(in oklab,var(--acc) 40%,transparent);transition:transform .15s}
 .bigBtn:active{transform:scale(.95)}
 .logoTile{width:84px;height:84px;border-radius:26px;display:flex;align-items:center;justify-content:center;
   font-family:'Unbounded';font-weight:900;font-size:38px;color:#06231a;
   background:linear-gradient(135deg,var(--acc2),var(--acc));
-  box-shadow:0 16px 40px rgba(47,230,167,.45),inset 0 1px 0 rgba(255,255,255,.5);
+  box-shadow:0 16px 40px color-mix(in oklab,var(--acc) 45%,transparent),inset 0 1px 0 rgba(255,255,255,.5);
   animation:logoFloat 3.4s ease-in-out infinite}
 @keyframes logoFloat{50%{transform:translateY(-8px) rotate(-2deg)}}
 .ghostLink{margin-top:20px;font-size:13px;color:#7c8b93;text-decoration:underline;text-underline-offset:3px}
@@ -98,7 +98,7 @@ section.active{display:block}
 .secSub{color:#93a4ad;font-size:13px;margin:0 2px 16px;line-height:1.5}
 
 #machine{padding:20px 14px 18px;position:relative;overflow:hidden;transition:box-shadow .5s,border-color .5s}
-#machine::before{content:'';position:absolute;inset:0;background:radial-gradient(90% 120% at 50% 0%,rgba(47,230,167,.10),transparent 60%);pointer-events:none}
+#machine::before{content:'';position:absolute;inset:0;background:radial-gradient(90% 120% at 50% 0%,color-mix(in oklab,var(--acc) 10%,transparent),transparent 60%);pointer-events:none}
 .mLabel{font-size:11px;font-weight:800;letter-spacing:2.2px;color:#7f9099;text-transform:uppercase;text-align:center;margin-bottom:14px}
 #digits{display:flex;justify-content:center;gap:3px;min-height:56px;align-items:center;overflow:hidden}
 #digits .digit{font-family:'Unbounded';font-weight:800;font-size:clamp(24px,7.4vw,42px);width:1.18ch;text-align:center;
@@ -120,12 +120,12 @@ section.active{display:block}
 #spinBtn{display:block;width:100%;margin-top:18px;padding:21px;border-radius:22px;
   font-family:'Unbounded';font-weight:800;font-size:17px;color:#06231a;position:relative;overflow:hidden;
   background:linear-gradient(135deg,var(--acc2) 0%,var(--acc) 70%);
-  box-shadow:0 12px 34px rgba(47,230,167,.38),inset 0 1px 0 rgba(255,255,255,.55);
+  box-shadow:0 12px 34px color-mix(in oklab,var(--acc) 38%,transparent),inset 0 1px 0 rgba(255,255,255,.55);
   transition:transform .14s,box-shadow .3s,filter .3s}
 #spinBtn:active:not(:disabled){transform:scale(.965)}
 #spinBtn:disabled{filter:grayscale(.55) brightness(.75);box-shadow:none}
 #spinBtn.adMode{background:linear-gradient(135deg,#ffe9a3,var(--gold) 55%,var(--gold2));color:#4a2b00;
-  box-shadow:0 12px 34px rgba(255,180,40,.4)}
+  box-shadow:0 12px 34px color-mix(in oklab,var(--gold) 45%,transparent)}
 #spinBtn::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;transform:skewX(-24deg);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shine 3.2s ease-in-out infinite}
 #spinBtn:disabled::after{display:none}
@@ -137,19 +137,20 @@ section.active{display:block}
 #autoCard .aIco{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;
   background:linear-gradient(135deg,rgba(255,210,74,.25),rgba(255,157,43,.1));flex:none}
 #autoCard .aTxt{flex:1;min-width:0}
-#autoCard .aTxt b{font-size:14.5px;display:block}
+#autoCard .aTxt b{font-size:14.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#autoCard .aTxt b span.lvl{white-space:nowrap;flex:none}
 #autoCard .aTxt span{font-size:12px;color:#93a4ad}
 .switch{width:52px;height:31px;border-radius:100px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);
   position:relative;flex:none;transition:background .25s}
 .switch::after{content:'';position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#c8d2d6;transition:transform .25s cubic-bezier(.4,1.6,.5,1),background .25s}
 .switch.on{background:var(--acc)}
 .switch.on::after{transform:translateX(21px);background:#fff}
-#autoCd{font-weight:800;font-size:12.5px;color:var(--acc);min-width:58px;text-align:right;font-variant-numeric:tabular-nums}
+#autoCd{font-weight:800;font-size:12.5px;color:var(--acc);min-width:58px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
 
 .upCard{display:flex;align-items:center;gap:13px;padding:15px;margin-bottom:11px;transition:transform .15s}
 .upCard.legend{border:1px solid rgba(255,210,74,.4);background:linear-gradient(135deg,rgba(255,210,74,.10),var(--glass))}
 .upIco{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;
-  background:rgba(47,230,167,.16);border:1px solid rgba(47,230,167,.25)}
+  background:color-mix(in oklab,var(--acc) 16%,transparent);border:1px solid color-mix(in oklab,var(--acc) 25%,transparent)}
 .upCard.legend .upIco{background:linear-gradient(135deg,rgba(255,210,74,.3),rgba(255,157,43,.12));border-color:rgba(255,210,74,.4)}
 .upMid{flex:1;min-width:0}
 .upMid b{font-size:14.5px;display:flex;align-items:center;gap:8px}
@@ -165,15 +166,15 @@ section.active{display:block}
 .upCard.legend .buyBtn{background:linear-gradient(135deg,#ffe9a3,var(--gold));color:#4a2b00}
 
 .heroCard{padding:24px 20px;text-align:center;position:relative;overflow:hidden}
-.heroCard::before{content:'';position:absolute;inset:0;background:radial-gradient(70% 90% at 50% 0%,rgba(47,230,167,.14),transparent 70%);pointer-events:none}
-.crystal{font-size:46px;filter:drop-shadow(0 6px 18px rgba(47,230,167,.6));animation:logoFloat 3s ease-in-out infinite;display:inline-block}
+.heroCard::before{content:'';position:absolute;inset:0;background:radial-gradient(70% 90% at 50% 0%,color-mix(in oklab,var(--acc) 14%,transparent),transparent 70%);pointer-events:none}
+.crystal{font-size:46px;filter:drop-shadow(0 6px 18px color-mix(in oklab,var(--acc) 60%,transparent));animation:logoFloat 3s ease-in-out infinite;display:inline-block}
 .heroNum{font-family:'Unbounded';font-weight:900;font-size:34px;margin:8px 0 2px}
 .heroLbl{font-size:12px;color:#93a4ad;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
 .barWrap{height:10px;border-radius:100px;background:rgba(0,0,0,.4);overflow:hidden;margin:16px 4px 8px;border:1px solid rgba(255,255,255,.07)}
-.barFill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s cubic-bezier(.2,.9,.3,1);box-shadow:0 0 12px rgba(47,230,167,.6)}
+.barFill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s cubic-bezier(.2,.9,.3,1);box-shadow:0 0 12px color-mix(in oklab,var(--acc) 60%,transparent)}
 .barLbl{font-size:12px;color:#93a4ad}
 .prestBtn{width:100%;margin-top:18px;padding:18px;border-radius:18px;font-family:'Unbounded';font-weight:800;font-size:15px;
-  color:#fff;background-color:var(--acc);box-shadow:0 10px 28px rgba(47,230,167,.35);transition:transform .15s,filter .3s}
+  color:#fff;background-color:var(--acc);box-shadow:0 10px 28px color-mix(in oklab,var(--acc) 35%,transparent);transition:transform .15s,filter .3s}
 .prestBtn:active{transform:scale(.96)}
 .prestBtn:disabled{filter:grayscale(.7) brightness(.6)}
 .infoRow{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;margin-top:10px;font-size:13.5px}
@@ -197,13 +198,9 @@ nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-b
   backdrop-filter:blur(26px) saturate(1.7);-webkit-backdrop-filter:blur(26px) saturate(1.7);
   box-shadow:0 18px 44px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.10)}
 #bubble{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:20px;
-  background:rgba(47,230,167,.24);border:1px solid rgba(47,230,167,.45);
-  box-shadow:0 6px 20px rgba(47,230,167,.3),inset 0 1px 0 rgba(255,255,255,.22);
+  background:color-mix(in oklab,var(--acc) 24%,transparent);border:1px solid color-mix(in oklab,var(--acc) 45%,transparent);
+  box-shadow:0 6px 20px color-mix(in oklab,var(--acc) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.22);
   transition:transform .55s cubic-bezier(.55,-.25,.25,1.35)}
-html[data-theme="ice"] #bubble{background:rgba(76,201,255,.24);border-color:rgba(76,201,255,.45);box-shadow:0 6px 20px rgba(76,201,255,.3),inset 0 1px 0 rgba(255,255,255,.22)}
-html[data-theme="amber"] #bubble{background:rgba(255,176,32,.24);border-color:rgba(255,176,32,.45);box-shadow:0 6px 20px rgba(255,176,32,.3),inset 0 1px 0 rgba(255,255,255,.22)}
-html[data-theme="rose"] #bubble{background:rgba(255,93,126,.24);border-color:rgba(255,93,126,.45);box-shadow:0 6px 20px rgba(255,93,126,.3),inset 0 1px 0 rgba(255,255,255,.22)}
-html[data-theme="ultra"] #bubble{background:rgba(143,123,255,.24);border-color:rgba(143,123,255,.45);box-shadow:0 6px 20px rgba(143,123,255,.3),inset 0 1px 0 rgba(255,255,255,.22)}
 #bubble.squash{animation:squash .55s cubic-bezier(.4,0,.3,1)}
 @keyframes squash{30%{scale:1.14 .86}65%{scale:.94 1.06}}
 .navBtn{flex:1;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
@@ -438,7 +435,7 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
       <div id="spinSub"></div>
       <div class="glass hidden" id="autoCard">
         <div class="aIco">🤖</div>
-        <div class="aTxt"><b>Автопрокрут <span id="autoLvlTag" style="font-size:10px;color:var(--gold);background:rgba(255,210,74,.14);padding:2px 7px;border-radius:100px;font-weight:800">ур. 1</span></b><span id="autoDesc">каждые 10 сек после спина</span></div>
+        <div class="aTxt"><b>Автопрокрут <span id="autoLvlTag" class="lvl" style="font-size:10px;color:var(--gold);background:rgba(255,210,74,.14);padding:2px 7px;border-radius:100px;font-weight:800">ур. 1</span></b><span id="autoDesc">каждые 10 сек после спина</span></div>
         <span id="autoCd"></span>
         <div class="switch" id="autoTgl"></div>
       </div>
@@ -452,7 +449,7 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
 
     <section id="tab-pre">
       <h2 class="secTitle">Престиж</h2>
-      <p class="secSub">Сбрось монеты и улучшения ради постоянной удачи на редкие числа. Статистика сохраняется навсегда.</p>
+      <p class="secSub">Сбрось прогресс ради постоянной удачи. Монеты останутся 5 000 ₵, удача обнулится, остальные улучшения сохранят 50% уровня.</p>
       <div class="glass heroCard">
         <span class="crystal">💠</span>
         <div class="heroNum" id="prCry">0</div>
@@ -466,7 +463,9 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
       <div class="glass infoRow"><span>Шанс редкого+</span><b id="prChance">—</b></div>
       <div class="glass infoRow"><span>Престижей сделано</span><b id="prCount">0</b></div>
       <div class="glass infoRow" style="flex-direction:column;align-items:flex-start;gap:6px">
-        <span>⟳ Сбрасывается: монеты, улучшения, автопрокрут</span>
+        <span>⟳ Обнуляется: удача (полностью)</span>
+        <span>⟳ Сокращается на 50%: скорость, множитель, автопрокрут</span>
+        <span>⟳ Сбрасывается до 5 000 ₵: монеты</span>
         <span>✓ Остаётся: кристаллы, статистика, настройки</span>
       </div>
     </section>
@@ -552,7 +551,7 @@ body.rm .orb,body.rm #spinBtn::after,body.rm #csRays{animation:none!important}
   <div class="setRow" id="rowCut"><div>Катсцены<small>эпичные сцены для редких чисел (доступно после 25 ур. скорости)</small></div><div class="switch" id="swCut"></div></div>
   <div class="setRow" id="rowMotion"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
   <button class="dangerBtn" id="resetBtn">Сбросить весь прогресс</button>
-  <div class="credit">ЧИСЛО • версия 1.5<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
+  <div class="credit">ЧИСЛО • версия 1.6<br>разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
 </div>
 
 <div id="modalWrap"><div id="modalBox">
@@ -587,6 +586,7 @@ const CS_CFG={
  8:{parts:60,delay:950,dur:2400,ring:true,flash:true,boom:true,rainbow:true}
 };
 const PRESTIGE_BASE=250000;
+const PRESTIGE_COINS_LEFT=5000;
 const THEMES=[['mint','#2fe6a7','Изумруд'],['ice','#4cc9ff','Лёд'],['amber','#ffb020','Янтарь'],['rose','#ff5d7e','Роза'],['ultra','#8f7bff','Ультра']];
 
 const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:false,
@@ -595,7 +595,7 @@ const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:
 let S=load();
 function load(){
   try{
-    const r=JSON.parse(localStorage.getItem('chislo_dany_v5'));
+    const r=JSON.parse(localStorage.getItem('chislo_dany_v6'));
     if(!r)return JSON.parse(JSON.stringify(DEF));
     const o=JSON.parse(JSON.stringify(DEF));
     Object.assign(o,r);
@@ -605,7 +605,7 @@ function load(){
   }catch(e){return JSON.parse(JSON.stringify(DEF))}
 }
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v5',JSON.stringify(S))}catch(e){}},400)}
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem('chislo_dany_v6',JSON.stringify(S))}catch(e){}},400)}
 
 const $=s=>document.querySelector(s);
 const fmt=n=>Math.floor(n).toLocaleString('ru-RU');
@@ -907,16 +907,16 @@ $('#adOpenSite').addEventListener('click',function(){
 });
 
 const UPS=[
- {id:'luck',ico:'🍀',name:'Удача',desc:'Редкие числа выпадают чаще. Каждый уровень немного повышает цену крутки.',max:60,
+ {id:'luck',ico:'🍀',name:'Удача',desc:'Редкие числа выпадают чаще. Каждый уровень немного повышает цену крутки. При престиже обнуляется полностью.',max:60,
   cost:function(l){return Math.round(40*Math.pow(1.55,l))},
   eff:function(){return 'шанс редкого+ '+rareChance().toFixed(2)+'% • пул удачи '+luckPool()}},
- {id:'speed',ico:'⚡',name:'Скорость крутки',desc:'Число крутится быстрее. Ур. 25 — мгновенно (катсцены отключаются, их можно вернуть в настройках).',max:25,
+ {id:'speed',ico:'⚡',name:'Скорость крутки',desc:'Число крутится быстрее. Ур. 25 — мгновенно. При престиже сохраняет 50% уровня.',max:25,
   cost:function(l){return Math.round(60*Math.pow(1.62,l))},
   eff:function(){return S.speed>=25?'МАКСИМУМ: мгновенная крутка':'длительность '+(spinDur()/1000).toFixed(1)+' сек'}},
- {id:'mult',ico:'💎',name:'Цена чисел',desc:'+12% к стоимости каждого выпавшего числа.',max:40,
+ {id:'mult',ico:'💎',name:'Цена чисел',desc:'+12% к стоимости каждого выпавшего числа. При престиже сохраняет 50% уровня.',max:40,
   cost:function(l){return Math.round(90*Math.pow(1.6,l))},
   eff:function(){return 'множитель ×'+(1+0.12*S.mult).toFixed(2)}},
- {id:'auto',ico:'🤖',name:'Автопрокрут',desc:'Сам крутит за тебя: ждёт после спина и жмёт кнопку. Макс. уровень 24 = 0.5 сек.',max:24,
+ {id:'auto',ico:'🤖',name:'Автопрокрут',desc:'Сам крутит за тебя. Макс. уровень 24 = 0.5 сек. При престиже сохраняет 50% уровня.',max:24,
   cost:function(l){return l===0?15000:Math.round(2500*Math.pow(1.7,l))},
   eff:function(){return S.auto===0?'не куплено':'интервал '+autoInterval().toFixed(1)+' сек'},legend:true}
 ];
@@ -1025,12 +1025,28 @@ function renderPrestige(){
 }
 $('#prBtn').addEventListener('click',function(){
   const gain=crystalsFor(S.runEarned);if(gain<1)return;
-  modal('Сделать престиж?','Монеты и все улучшения сгорят, но ты получишь '+gain+' 💠 кристаллов постоянной удачи. Статистика сохранится.',function(){
-    S.coins=0;S.luck=0;S.speed=0;S.mult=0;S.auto=0;S.autoInt=0;S.autoOn=false;autoNext=0;
-    S.runEarned=0;S.crystals+=gain;S.prestiges++;save();
+  const prevLuck=S.luck, prevSpeed=S.speed, prevMult=S.mult, prevAuto=S.auto>0?S.autoInt+1:0;
+  const newSpeed=Math.floor(prevSpeed*0.5);
+  const newMult=Math.floor(prevMult*0.5);
+  const newAutoInt=prevAuto>0?Math.floor((prevAuto-1)*0.5):0;
+  modal('Сделать престиж?','Получишь '+gain+' 💠 кристаллов.\n\nУдача обнулится: '+prevLuck+' → 0\nСкорость: '+prevSpeed+' → '+newSpeed+'\nМножитель: '+prevMult+' → '+newMult+'\nАвтопрокрут: '+prevAuto+' → '+(newAutoInt+1)+'\nМонеты: '+fmt(S.coins)+' → '+fmt(PRESTIGE_COINS_LEFT)+'\n\nСтатистика сохранится.',function(){
+    S.coins=PRESTIGE_COINS_LEFT;
+    S.luck=0;
+    S.speed=newSpeed;
+    S.mult=newMult;
+    S.auto=prevAuto>0?1:0;
+    S.autoInt=newAutoInt;
+    S.autoOn=false;
+    autoNext=0;
+    S.runEarned=0;
+    S.firstFree=true;
+    S.crystals+=gain;
+    S.prestiges++;
+    if(newSpeed<25)S.cutscenes=true;
+    save();
     sfx.fanfare(5);vib([20,30,20,30,80]);
-    updCoins(true);updSpinBtn();renderUpgrades();renderAutoCard();renderPrestige();
-    toast('💠 Престиж! +'+gain+' кристаллов удачи');
+    updCoins(true);updSpinBtn();renderUpgrades();renderAutoCard();renderPrestige();renderSettings();syncSwitches();
+    toast('💠 Престиж! +'+gain+' кристаллов, осталось '+fmt(PRESTIGE_COINS_LEFT)+' ₵');
   });
 });
 
@@ -1103,7 +1119,7 @@ function syncSwitches(){
 $('#resetBtn').addEventListener('click',function(){
   closeSheet();
   modal('Сбросить прогресс?','Полностью удалит всё: монеты, улучшения, престиж и статистику. Это нельзя отменить.',function(){
-    localStorage.removeItem('chislo_dany_v5');location.reload();
+    localStorage.removeItem('chislo_dany_v6');location.reload();
   });
 });
 
