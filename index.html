@@ -56,6 +56,8 @@ html[data-theme="ultra"]{--acc:#8f7bff;--acc2:#cabfff;--bgA:rgba(143,123,255,.16
 .banLbl{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#8b9ba4;margin-top:8px}
 .banSub{margin-top:20px;font-size:13px;color:#8b9ba4;line-height:1.5;max-width:340px}
 .banSub span{color:#cfd9dd;font-weight:700}
+#unbanBtn{margin-top:26px;font-family:'Unbounded';font-weight:800;font-size:13px;color:#3a2400;background:linear-gradient(135deg,#ffe9a3,var(--gold));padding:16px 28px;border-radius:16px;box-shadow:0 10px 30px rgba(255,210,74,.35);transition:transform .15s}
+#unbanBtn:active{transform:scale(.95)}
 #app{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;opacity:1;transition:opacity .45s,filter .45s;overflow:hidden}
 body.cut #app{opacity:0;filter:blur(6px);pointer-events:none}
 body.paused #app{filter:blur(10px);pointer-events:none}
@@ -180,11 +182,11 @@ nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-b
 .navBtn span{font-size:9px;font-weight:800;letter-spacing:.3px}
 .navBtn.active{color:var(--acc2)}
 #potionHUD{position:fixed;right:20px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:55;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
-.phItem{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:16px;background:rgba(16,22,24,.85);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(16px)}
+.phItem{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:16px;background:rgba(16,22,24,.28);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .phItem.pop{animation:chipPop .4s cubic-bezier(.3,1.7,.4,1)}
 .phItem .phIco{font-size:18px}
-.phItem .phTxt{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums}
-.phItem.skipQ{border-color:var(--gold);box-shadow:0 0 16px rgba(255,210,74,.4)}
+.phItem .phTxt{font-size:12px;font-weight:800;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:.3px;text-shadow:0 1px 4px rgba(0,0,0,.9)}
+.phItem.skipQ{border-color:rgba(255,210,74,.5);box-shadow:0 0 16px rgba(255,210,74,.3)}
 #streakFire{position:fixed;left:20px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:55;display:flex;align-items:center;gap:9px;opacity:0;transition:opacity .6s ease;pointer-events:none}
 #streakFlameWrap{transition:transform .6s cubic-bezier(.3,1.4,.4,1),filter .6s ease;transform-origin:center center;flex:none}
 #streakFlame{font-size:24px;display:inline-block;animation:flameDance .55s ease-in-out infinite alternate;filter:drop-shadow(0 0 6px rgba(255,140,40,.9)) drop-shadow(0 0 14px rgba(255,80,20,.5))}
@@ -354,10 +356,11 @@ body.rm #csChips .chip{animation:none;opacity:1;transform:none}
 <div class="screen hidden" id="banScreen">
   <div class="banIcon">🔨</div>
   <h1>Вы заблокированы</h1>
-  <div class="banReason"><b>Причина:</b> обнаружен <b>автокликер</b> — автоматическое нажатие кнопки «Крутить» с аномально высокой частотой (50+ нажатий в секунду одним пальцем).</div>
+  <div class="banReason"><b>Причина:</b> обнаружен <b>автокликер</b> — аномально высокая скорость нажатий кнопки «Крутить».</div>
   <div class="banLbl">до разблокировки</div>
   <div class="banTime" id="banTimeLeft">--:--:--</div>
   <p class="banSub">Аккаунт будет разблокирован автоматически:<br><span id="banUntilText"></span><br><br>Честная игра — залог удачи 🍀</p>
+  <button id="unbanBtn" class="hidden">🔓 Снять бан</button>
 </div>
 <div class="screen hidden" id="gate">
   <div class="logoTile">№</div>
@@ -415,7 +418,7 @@ body.rm #csChips .chip{animation:none;opacity:1;transform:none}
         <div class="heroNum" id="prCry">0</div>
         <div class="heroLbl">кристаллов престижа</div>
         <div class="barWrap"><div class="barFill" id="prBar" style="width:0%"></div></div>
-        <div class="barLbl" id="prBarLbl">до кристалла: 250 000 ₵</div>
+        <div class="barLbl" id="prBarLbl">до кристалла: 1 000 000 ₵</div>
         <button class="prestBtn" id="prBtn" disabled>СДЕЛАТЬ ПРЕСТИЖ</button>
       </div>
       <div class="glass infoRow"><span>Заработано за цикл</span><b id="prEarned">0 ₵</b></div>
@@ -435,9 +438,10 @@ body.rm #csChips .chip{animation:none;opacity:1;transform:none}
       <div class="statGrid">
         <div class="glass statCard"><div class="l">Всего круток</div><div class="v" id="stSpins">0</div></div>
         <div class="glass statCard"><div class="l">Монет добыто</div><div class="v" id="stEarned">0</div></div>
+        <div class="glass statCard"><div class="l">⏱ Наиграно</div><div class="v" id="stPlayTime" style="font-size:16px">0 мин</div></div>
+        <div class="glass statCard"><div class="l">🔥 Рекорд серии</div><div class="v" id="stBestStreak">0</div></div>
         <div class="glass statCard wide"><div class="l">🏆 Самое редкое число</div><div class="v" id="stRarest" style="font-size:16px">ещё не найдено</div></div>
         <div class="glass statCard"><div class="l">Рекорд выигрыша</div><div class="v" id="stBest" style="font-size:15px">0</div></div>
-        <div class="glass statCard"><div class="l">🔥 Рекорд серии</div><div class="v" id="stBestStreak">0</div></div>
         <div class="glass statCard"><div class="l">Рекламы смотрено</div><div class="v" id="stAds">0</div></div>
       </div>
       <div class="glass" style="margin-top:10px;padding:8px 14px" id="stTiers"></div>
@@ -525,7 +529,7 @@ body.rm #csChips .chip{animation:none;opacity:1;transform:none}
   <div id="cutTierList"></div>
   <div class="setRow" id="rowMotion"><div>Меньше анимаций<small>для слабых устройств</small></div><div class="switch" id="swMotion"></div></div>
   <button class="dangerBtn" id="resetBtn">Сбросить весь прогресс</button>
-  <div class="credit">ЧИСЛО • версия 2.5 • сборка 57 • разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
+  <div class="credit">ЧИСЛО • версия 2.5 • сборка 62 • разработчик — <b>Dany</b> • <b>dany.run.place</b></div>
 </div>
 <div id="modalWrap"><div id="modalBox">
   <h3 id="mTitle"></h3><p id="mText"></p>
@@ -534,6 +538,7 @@ body.rm #csChips .chip{animation:none;opacity:1;transform:none}
 <div id="toast"></div>
 <script>
 "use strict";
+const ANTI_BAN_BUTTON=false;
 const TIERS=[
  {name:'Обычное',    col:'#9aa4b2', min:1e8,  max:1e9,      w:84000, v:[16,42]},
  {name:'Нечастое',   col:'#4cc9ff', min:1e7,  max:1e8-1,    w:12500, v:[95,230]},
@@ -556,7 +561,7 @@ const CS_CFG={
  7:{parts:60,delay:900,dur:2200,ring:true,flash:true,boom:true,glitch:true},
  8:{parts:80,delay:1000,dur:2500,ring:true,flash:true,boom:true,rainbow:true}
 };
-const PRESTIGE_BASE=250000;
+const PRESTIGE_BASE=1000000;
 const PRESTIGE_COINS_LEFT=5000;
 const TRAIT_BONUS=1.1;
 const POTION_UNLOCK=100;
@@ -570,10 +575,10 @@ const CLICK_LIMIT=50;
 const THEMES=[['mint','#2fe6a7','Изумруд'],['ice','#4cc9ff','Лёд'],['amber','#ffb020','Янтарь'],['rose','#ff5d7e','Роза'],['ultra','#8f7bff','Ультра']];
 const DEF={coins:0,firstFree:true,luck:0,speed:0,mult:0,auto:0,autoInt:0,autoOn:false,
  crystals:0,prestiges:0,runEarned:0,theme:'mint',sound:true,vibro:true,alwaysOn:false,reduce:false,
- bannedUntil:0,
+ bannedUntil:0,antiCheatVersion:2,
  cutsceneTiers:{2:true,3:true,4:true,5:true,6:true,7:true,8:true},
  potions:{coins:0,luck:0,skip:0},potionTimers:{coins:0,luck:0},potionBuys:{coins:0,luck:0,skip:0},
- stats:{spins:0,earned:0,ads:0,best:0,bestStreak:0,rarest:null,rarestTier:-1,tiers:[0,0,0,0,0,0,0,0,0],t0:Date.now()}};
+ stats:{spins:0,earned:0,ads:0,best:0,bestStreak:0,playTime:0,rarest:null,rarestTier:-1,tiers:[0,0,0,0,0,0,0,0,0],t0:Date.now()}};
 let S=load();
 function load(){
   try{
@@ -591,6 +596,10 @@ function load(){
     const maxTimer=nowT+POTION_DURATION*6;
     if(o.potionTimers.coins>maxTimer)o.potionTimers.coins=0;
     if(o.potionTimers.luck>maxTimer)o.potionTimers.luck=0;
+    if(!o.antiCheatVersion||o.antiCheatVersion<2){
+      o.bannedUntil=0;
+      o.antiCheatVersion=2;
+    }
     return o;
   }catch(e){return JSON.parse(JSON.stringify(DEF))}
 }
@@ -603,6 +612,15 @@ const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 function vib(p){if(!S.vibro)return;try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show')},2300)}
 const wait=ms=>new Promise(function(r){setTimeout(r,ms)});
+function fmtPlayTime(ms){
+  const totalSec=Math.floor(ms/1000);
+  const days=Math.floor(totalSec/86400);
+  const hours=Math.floor((totalSec%86400)/3600);
+  const mins=Math.floor((totalSec%3600)/60);
+  if(days>0)return days+' д '+hours+' ч';
+  if(hours>0)return hours+' ч '+mins+' мин';
+  return mins+' мин';
+}
 function potionPrice(id){
   const raw=POTION_BASE[id]*Math.pow(POTION_GROWTH[id],S.potionBuys[id]);
   return Math.min(POTION_CAP[id],Math.round(raw));
@@ -691,14 +709,13 @@ function playTraitSounds(traits,startDelayMs){
   });
 }
 let spinPressTimes=[];
-let activeTouches=0;
 function isBanned(){return S.bannedUntil&&Date.now()<S.bannedUntil}
 function recordSpinPress(){
   if(isBanned())return;
   const now=Date.now();
   spinPressTimes.push(now);
   spinPressTimes=spinPressTimes.filter(function(t){return now-t<1000});
-  if(spinPressTimes.length>=CLICK_LIMIT&&activeTouches<=2){
+  if(spinPressTimes.length>=CLICK_LIMIT){
     triggerBan();
   }
 }
@@ -719,8 +736,14 @@ function showBanScreen(){
   $('#gate').classList.add('hidden');
   $('#pauseOv').classList.add('hidden');
   $('#banScreen').classList.remove('hidden');
+  $('#unbanBtn').classList.toggle('hidden',!ANTI_BAN_BUTTON);
   updateBanTimer();
 }
+$('#unbanBtn').addEventListener('click',function(){
+  S.bannedUntil=0;
+  save();
+  location.reload();
+});
 function updateBanTimer(){
   if(!isBanned()){
     if(S.bannedUntil){S.bannedUntil=0;save();location.reload()}
@@ -1303,8 +1326,8 @@ function renderPotionHUD(){
   const now=Date.now();
   const coinsActive=now<S.potionTimers.coins;
   const luckActive=now<S.potionTimers.luck;
-  updateHudItem('#phCoins','#phCoinsTxt',coinsActive,coinsActive?'×2 '+fmtTime(S.potionTimers.coins-now):'');
-  updateHudItem('#phLuck','#phLuckTxt',luckActive,luckActive?'×2 '+fmtTime(S.potionTimers.luck-now):'');
+  updateHudItem('#phCoins','#phCoinsTxt',coinsActive,coinsActive?'×2 · '+fmtTime(S.potionTimers.coins-now):'');
+  updateHudItem('#phLuck','#phLuckTxt',luckActive,luckActive?'×2 · '+fmtTime(S.potionTimers.luck-now):'');
   updateHudItem('#phSkip','#phSkipTxt',skipQueued,skipQueued?'Готово!':'');
 }
 setInterval(function(){
@@ -1393,6 +1416,7 @@ $('#prBtn').addEventListener('click',function(){
 function renderStats(){
   $('#stSpins').textContent=fmt(S.stats.spins);
   $('#stEarned').textContent=fmtShort(S.stats.earned);
+  $('#stPlayTime').textContent=fmtPlayTime(S.stats.playTime);
   $('#stBest').textContent=fmtShort(S.stats.best)+' ₵';
   $('#stBestStreak').textContent=fmt(S.stats.bestStreak);
   $('#stAds').textContent=S.stats.ads;
@@ -1505,9 +1529,6 @@ function goFS(){
     if(p&&p.catch)p.catch(function(){});
   }catch(e){}
 }
-document.addEventListener('touchstart',function(e){activeTouches=e.touches.length},{passive:true});
-document.addEventListener('touchend',function(e){activeTouches=e.touches.length},{passive:true});
-document.addEventListener('touchcancel',function(e){activeTouches=e.touches.length},{passive:true});
 document.addEventListener('pointerdown',function(e){
   const btn=$('#spinBtn');
   if(!btn)return;
@@ -1574,6 +1595,14 @@ document.addEventListener('visibilitychange',function(){
   if(document.hidden){save()}
   else if(S.alwaysOn){updateWakeLock()}
 });
+let ptCounter=0;
+setInterval(function(){
+  if(started&&!document.hidden){
+    S.stats.playTime+=1000;
+    ptCounter++;
+    if(ptCounter>=30){ptCounter=0;save()}
+  }
+},1000);
 setTab('gen');
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
@@ -1582,4 +1611,4 @@ if('serviceWorker' in navigator){
 }
 </script>
 </body>
-  </html>
+</html>
