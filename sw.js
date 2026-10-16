@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chislo-dany-v15';
+const CACHE_NAME = 'chislo-dany-v20';
 const urlsToCache = [
   './',
   './index.html',
@@ -61,4 +61,4 @@ self.addEventListener('fetch', (event) => {
       });
     })
   );
-});
+});      
